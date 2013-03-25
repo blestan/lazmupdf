@@ -7,15 +7,13 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, main, libmupdf
-  { you can add units after this };
+  Forms, main_test, libmupdf, purecode;
 
 {$R *.res}
 
 begin
-  RequireDerivedFormResource := True;
   Application.Initialize;
-  Application.CreateForm(TForm1, Form1);
+  Application.CreateForm(TPreviewForm, PreviewForm);
   Application.Run;
 end.
 

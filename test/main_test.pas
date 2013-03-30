@@ -13,22 +13,22 @@ type
   { TPreviewForm }
 
   TPreviewForm = class(TForm)
+    HRuler: TRuler;
     ImageList1: TImageList;
     OpenDialog1: TOpenDialog;
     PaintBox1: TBGRAView;
-    HRuler: TRuler;
     Panel1: TPanel;
     Panel2: TPanel;
+    SpeedButton1: TSpeedButton;
     ToolBar1: TToolBar;
     ToolButton1: TToolButton;
     ToolButton2: TToolButton;
     ToolButton3: TToolButton;
     ToolButton4: TToolButton;
     ToolButton5: TToolButton;
-    VRuler: TRuler;
     HScrollBar: TScrollBar;
+    VRuler: TRuler;
     VScrollBar: TScrollBar;
-    SpeedButton1: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -110,32 +110,48 @@ end;
 procedure TPreviewForm.HScrollBarScroll(Sender: TObject;
   ScrollCode: TScrollCode; var ScrollPos: Integer);
 begin
- HRuler.ZeroOffset:=-ScrollPos;
+ HRuler.ZeroOffset:=-ScrollPos-HRuler.Left;
  PaintBox1.SetOrigin(-ScrollPos,PaintBox1.OriginY);
 end;
 
 procedure TPreviewForm.GotoPage(N: Integer);
 var  r: fz_rectangle;
-     w,h: Integer;
+     m: fz_matrix;
+     w,h,xo,yo: Integer;
 begin
- if (N<0) or (N>=FPCount) then Exit;
+ if (N<0) or (N>=FPCount) then exit;
  if FPage<>nil then fz_free_page(FDoc,FPage);
  FPage:=fz_load_page(FDOC,N);
  r:=fz_bound_page(FDoc,FPage);
+
+ with m do
+      begin
+        a:=96/72;b:=0;c:=0;d:=96/72;e:=0;f:=0;
+      end;
+
+// fz_transform_rect(r,m);
  w:=round((r.x1-r.x0)*96/72);
  h:=round((r.y1-r.y0)*96/72);
- PaintBox1.BeginUpdateBounds;
- PaintBox1.PageWidth:=w;
- PaintBox1.PageHeight:=h;
+
+ PaintBox1.SetPageSize(w,h);
+ PaintBox1.RedrawBitmapContent;
+
+ xo:=(PaintBox1.Width-PaintBox1.Bitmap.Width) div 2;
+ yo:=(PaintBox1.Height-PaintBox1.Bitmap.Height) div 2;
+
+ PaintBox1.Caption:=IntToSTr(N);
+ PaintBox1.SetOrigin(xo,yo);
+
+ HRuler.ZeroOffset:=xo;
+
  with HScrollBar do
    begin
-     Min:=HRuler.Scale(-w);
-     Max:=HRuler.Scale(w*2);
-     PageSize:=HRuler.Scale(w);
-     SmallChange:=HRuler.Scale(1);
-     LargeChange:=HRuler.Scale(10);
-     HRuler.ZeroOffset:=0;
-     Position:=-HRuler.ZeroOffset;
+     PageSize:=w;
+     Min:=-w;
+     Max:=2*w;
+     SmallChange:=1;
+     LargeChange:=w div 2;
+     Position:=0;
    end;
 
   with VScrollBar do
@@ -145,15 +161,10 @@ begin
      PageSize:=VRuler.Scale(h);
      SmallChange:=VRuler.Scale(1);
      LargeChange:=VRuler.Scale(10);
-     Position:=0;
-     VRuler.ZeroOffset:=0;
+     VRuler.ZeroOffset:=yo;
+     Position:=yo;
    end;
  FPNum:=N;
- PaintBox1.Caption:=IntToStr(FPNUM);
- PaintBox1.EndUpdateBounds;
- PaintBox1.DiscardBitmap;
- PaintBox1.SetOrigin(HRuler.ZeroOffset,VRuler.ZeroOffset);
-
 end;
 
 procedure TPreviewForm.ToolButton1Click(Sender: TObject);

@@ -1,7 +1,7 @@
 object PreviewForm: TPreviewForm
-  Left = 747
+  Left = 1431
   Height = 885
-  Top = 264
+  Top = 163
   Width = 1365
   Caption = 'PDF Preview'
   ClientHeight = 885
@@ -11,53 +11,7 @@ object PreviewForm: TPreviewForm
   OnShow = FormShow
   Position = poScreenCenter
   LCLVersion = '1.0.4.0'
-  object HRuler: TRuler
-    AnchorSideLeft.Control = SpeedButton1
-    AnchorSideLeft.Side = asrBottom
-    AnchorSideTop.Control = SpeedButton1
-    AnchorSideBottom.Control = SpeedButton1
-    AnchorSideBottom.Side = asrBottom
-    Left = 25
-    Height = 25
-    Top = 40
-    Width = 1382
-    RulerType = rtTop
-    RulerUnits = ruMM
-    Zoom = 1
-    TickColor = clBtnShadow
-    ZeroOffset = 0
-    Font.Height = -9
-    Color = clWindow
-    Anchors = [akTop, akLeft, akRight]
-  end
-  object SpeedButton1: TSpeedButton
-    AnchorSideTop.Control = Panel2
-    AnchorSideTop.Side = asrBottom
-    Left = 0
-    Height = 25
-    Top = 40
-    Width = 25
-    NumGlyphs = 0
-  end
-  object VRuler: TRuler
-    AnchorSideLeft.Control = SpeedButton1
-    AnchorSideTop.Control = SpeedButton1
-    AnchorSideTop.Side = asrBottom
-    Left = 0
-    Height = 850
-    Top = 65
-    Width = 25
-    RulerType = rtLeft
-    RulerUnits = ruMM
-    Zoom = 1
-    TickColor = clBtnShadow
-    ZeroOffset = 0
-    Font.Height = -9
-    Color = clWindow
-    Anchors = [akTop, akLeft, akBottom]
-  end
   object VScrollBar: TScrollBar
-    AnchorSideTop.Control = HRuler
     AnchorSideTop.Side = asrBottom
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
@@ -73,7 +27,6 @@ object PreviewForm: TPreviewForm
     OnScroll = VScrollBarScroll
   end
   object Panel1: TPanel
-    AnchorSideLeft.Control = VRuler
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = HScrollBar
     AnchorSideRight.Control = HScrollBar
@@ -107,28 +60,59 @@ object PreviewForm: TPreviewForm
     OnScroll = HScrollBarScroll
   end
   object PaintBox1: TBGRAView
-    AnchorSideLeft.Control = VRuler
-    AnchorSideLeft.Side = asrBottom
-    AnchorSideTop.Control = HRuler
-    AnchorSideTop.Side = asrBottom
-    AnchorSideRight.Control = VScrollBar
-    AnchorSideBottom.Control = HScrollBar
-    Left = 25
-    Height = 803
-    Top = 65
-    Width = 1323
+    Left = 1
+    Height = 827
+    Top = 41
+    Width = 1347
     OnRedraw = PaintBox1Redraw
     Alignment = taLeftJustify
     Anchors = [akTop, akLeft, akRight, akBottom]
     BevelOuter = bvNone
+    ClientHeight = 827
+    ClientWidth = 1347
     Color = clSilver
     PageColor = clWhite
-    PageWidth = 0
-    PageHeight = 0
     ParentColor = False
     TabOrder = 3
-    OnMouseMove = PaintBox1MouseMove
-    OnMouseWheel = PaintBox1MouseWheel
+    object HRuler: TRuler
+      AnchorSideBottom.Side = asrBottom
+      Left = 25
+      Height = 25
+      Top = 0
+      Width = 1406
+      RulerType = rtTop
+      RulerUnits = ruMM
+      Zoom = 1
+      TickColor = clBtnShadow
+      ZeroOffset = 0
+      Font.Height = -9
+      Color = clWindow
+      Anchors = [akTop, akLeft, akRight]
+    end
+    object VRuler: TRuler
+      AnchorSideTop.Side = asrBottom
+      Left = 0
+      Height = 798
+      Top = 25
+      Width = 25
+      RulerType = rtLeft
+      RulerUnits = ruMM
+      Zoom = 1
+      TickColor = clBtnShadow
+      ZeroOffset = 0
+      Font.Height = -9
+      Color = clWindow
+      Anchors = [akTop, akLeft, akBottom]
+    end
+    object SpeedButton1: TSpeedButton
+      AnchorSideTop.Control = Panel2
+      AnchorSideTop.Side = asrBottom
+      Left = 0
+      Height = 25
+      Top = 0
+      Width = 25
+      NumGlyphs = 0
+    end
   end
   object Panel2: TPanel
     Left = 0

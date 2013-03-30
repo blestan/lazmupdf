@@ -39,6 +39,7 @@ type
                x0,y0,x1,y1: cint
               end;
 
+    pfz_rectangle=^fz_rectangle;
     fz_rectangle= record
                    x0,y0,x1,y1: cfloat
                   end;
@@ -540,6 +541,25 @@ const
 
 
 
+ {
+	fz_transform_rect: Apply a transform to a rectangle.
+
+	After the four corner points of the axis-aligned rectangle
+	have been transformed it may not longer be axis-aligned. So a
+	new axis-aligned rectangle is created covering at least the
+	area of the transformed rectangle.
+
+	transform: Transformation matrix to apply. See fz_concat,
+	fz_scale and fz_rotate for how to create a matrix.
+
+	rect: Rectangle to be transformed. The two special cases
+	fz_empty_rect and fz_infinite_rect, may be used but are
+	returned unchanged as expected.
+
+	Does not throw exceptions.
+}
+
+function fz_transform_rect(var rect :  fz_rectangle; const transform: fz_matrix): pfz_rectangle;cdecl;external muLibName name 'fz_transform_rect';
 
 
 
